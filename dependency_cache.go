@@ -134,10 +134,14 @@ func (d *DependencyCache) Artifact(dependency BuildpackDependency, mods ...Reque
 	b, err := ioutil.ReadFile(file)
 	if err != nil && !os.IsNotExist(err) {
 		return nil, fmt.Errorf("unable to read %s\n%w", file, err)
+	} else if err != nil && os.IsNotExist(err) {
+		d.Logger.Debugf("%s does not exist", file)
 	}
 	if err := toml.Unmarshal(b, &actual); err != nil {
 		return nil, fmt.Errorf("unable to decode download metadata %s\n%w", file, err)
 	}
+
+	d.Logger.Debugf("comparing %+v and %+v...", dependency, actual)
 
 	if reflect.DeepEqual(dependency, actual) {
 		d.Logger.Bodyf("%s cached download from buildpack", color.GreenString("Reusing"))
@@ -148,10 +152,14 @@ func (d *DependencyCache) Artifact(dependency BuildpackDependency, mods ...Reque
 	b, err = ioutil.ReadFile(file)
 	if err != nil && !os.IsNotExist(err) {
 		return nil, fmt.Errorf("unable to read %s\n%w", file, err)
+	} else if err != nil && os.IsNotExist(err) {
+		d.Logger.Debugf("%s does not exist", file)
 	}
 	if err := toml.Unmarshal(b, &actual); err != nil {
 		return nil, fmt.Errorf("unable to decode download metadata %s\n%w", file, err)
 	}
+
+	d.Logger.Debugf("comparing %+v and %+v...", dependency, actual)
 
 	if reflect.DeepEqual(dependency, actual) {
 		d.Logger.Bodyf("%s previously cached download", color.GreenString("Reusing"))
