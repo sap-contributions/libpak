@@ -58,7 +58,7 @@ func testDependencyCache(t *testing.T, context spec.G, it spec.S) {
 		it("set default CachePath and UserAgent", func() {
 			dependencyCache, err := libpak.NewDependencyCache(ctx.Buildpack.Info.ID, ctx.Buildpack.Info.Version, ctx.Buildpack.Path, ctx.Platform.Bindings, log.NewDiscardLogger())
 			Expect(err).NotTo(HaveOccurred())
-			Expect(dependencyCache.CachePath).To(Equal(filepath.Join("some/path/dependencies")))
+			Expect(dependencyCache.CachePath).To(Equal("some/path/dependencies"))
 			Expect(dependencyCache.UserAgent).To(Equal("some-buildpack-id/some-buildpack-version"))
 			Expect(dependencyCache.Mappings).To(Equal(map[string]string{}))
 		})
